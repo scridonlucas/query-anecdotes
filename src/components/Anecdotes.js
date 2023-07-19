@@ -1,5 +1,7 @@
 import { useQuery } from 'react-query';
 import { getAnecdotes } from '../services';
+import { updateAnecdote } from '../services';
+import { useMutation, useQueryClient } from 'react-query';
 
 const Anecdote = ({ content, votes, handleClick }) => {
   return (
@@ -15,6 +17,12 @@ const Anecdote = ({ content, votes, handleClick }) => {
 
 const Anecdotes = () => {
   const result = useQuery('anecdotes', getAnecdotes);
+  const queryClient = useQueryClient();
+  const voteAnecdoteMutation = useMutation(updateAnecdote, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('anecdotes');
+    },
+  });
 
   if (result.isLoading) {
     return <div>Loading data...</div>;
@@ -27,7 +35,11 @@ const Anecdotes = () => {
   const anecdotes = result.data;
 
   const handleVote = (anecdote) => {
-    console.log(anecdote.id);
+    const newAnecdote = {
+      ...anecdote,
+      votes: anecdote.votes + 1,
+    };
+    voteAnecdoteMutation.mutate(newAnecdote);
   };
   return (
     <>
