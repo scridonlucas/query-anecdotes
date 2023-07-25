@@ -5,9 +5,12 @@ import {
   clearNotification,
   useNotificationDispatch,
 } from '../Context/NotificationContext';
+import { useNavigate } from 'react-router-dom';
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   const dispatch = useNotificationDispatch();
 
@@ -37,6 +40,7 @@ const AnecdoteForm = () => {
     };
     newAnecdoteMutation.mutate(newAnecdote);
     showNotification(`${newAnecdote.content} has been successfully created`);
+    navigate('/');
   };
 
   return (

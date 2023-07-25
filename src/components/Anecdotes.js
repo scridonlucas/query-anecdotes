@@ -7,7 +7,11 @@ import {
   clearNotification,
   useNotificationDispatch,
 } from '../Context/NotificationContext';
+import { Link, Routes, Route, useMatch } from 'react-router-dom';
 
+const padding = {
+  padding: 5,
+};
 const Anecdote = ({ content, votes, handleClick }) => {
   return (
     <>
@@ -21,6 +25,8 @@ const Anecdote = ({ content, votes, handleClick }) => {
 };
 
 const Anecdotes = () => {
+  const match = useMatch('/anecdotes:id');
+
   const result = useQuery('anecdotes', getAnecdotes);
 
   const queryClient = useQueryClient();
@@ -43,6 +49,10 @@ const Anecdotes = () => {
 
   const anecdotes = result.data;
 
+  const viwedAnecdote = match
+    ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
+    : null;
+
   const showNotification = (text) => {
     dispatch(setNotification(text));
     setTimeout(() => {
@@ -58,17 +68,20 @@ const Anecdotes = () => {
     voteAnecdoteMutation.mutate(newAnecdote);
     showNotification(`${newAnecdote.content} has been successfullty voted`);
   };
+
   return (
     <>
       {anecdotes.map((anecdote) => (
-        <Anecdote
-          key={anecdote.id}
-          content={anecdote.content}
-          votes={anecdote.votes}
-          handleClick={() => {
-            handleVote(anecdote);
-          }}
-        />
+        <Link style={padding} to={`/anecdotes/${anecdote.id}`}>
+          <Anecdote
+            key={anecdote.id}
+            content={anecdote.content}
+            votes={anecdote.votes}
+            handleClick={() => {
+              handleVote(anecdote);
+            }}
+          />
+        </Link>
       ))}
     </>
   );
