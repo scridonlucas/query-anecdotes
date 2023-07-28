@@ -8,6 +8,7 @@ import {
   useNotificationDispatch,
 } from '../Context/NotificationContext';
 import { Link, Routes, Route, useMatch } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 
 const padding = {
   padding: 5,
@@ -49,7 +50,7 @@ const Anecdotes = () => {
 
   const anecdotes = result.data;
 
-  const viwedAnecdote = match
+  const viewedAnecdote = match
     ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
     : null;
 
@@ -71,18 +72,25 @@ const Anecdotes = () => {
 
   return (
     <>
-      {anecdotes.map((anecdote) => (
-        <Link style={padding} to={`/anecdotes/${anecdote.id}`}>
-          <Anecdote
-            key={anecdote.id}
-            content={anecdote.content}
-            votes={anecdote.votes}
-            handleClick={() => {
-              handleVote(anecdote);
-            }}
-          />
-        </Link>
-      ))}
+      <Table striped>
+        <tbody>
+          {anecdotes.map((anecdote) => (
+            <tr key={anecdote.id}>
+              <td>
+                <Link style={padding} to={`/anecdotes/${anecdote.id}`}>
+                  <Anecdote
+                    content={anecdote.content}
+                    votes={anecdote.votes}
+                    handleClick={() => {
+                      handleVote(anecdote);
+                    }}
+                  />
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </>
   );
 };

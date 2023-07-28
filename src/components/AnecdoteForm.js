@@ -6,6 +6,7 @@ import {
   useNotificationDispatch,
 } from '../Context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
+import { Table, Form, Button } from 'react-bootstrap';
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient();
@@ -46,10 +47,14 @@ const AnecdoteForm = () => {
   return (
     <div>
       <h3>create new</h3>
-      <form onSubmit={onCreate}>
-        <input name="anecdote" />
-        <button type="submit">create</button>
-      </form>
+      <Form onSubmit={onCreate}>
+        <Form.Group>
+          <Form.Control name="anecdote" />
+          <Button variant="primary" type="submit">
+            create
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   );
 };
