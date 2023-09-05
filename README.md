@@ -1,4 +1,4 @@
-# Patientor
+# Anecdotes App
 
 Frontend for an anecdotes application built using React, React Query, React Router and JSON Server.
 
